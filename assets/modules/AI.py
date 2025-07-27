@@ -24,8 +24,11 @@ class AI_Object:
         self.Description = Description
         self.AI_API_KEY = AI_API_KEY
 
+        # Create Database if it doesn't exist
+        program_functions.CreateDatabase()
+
         # Import local database for certain words to listen for, and their responses
-        print("\n\033[93mReading Command Database\033[0m")
+        print("\n\033[93mReading Database\033[0m")
         self.AppDirectories = program_functions.ReadAppDirectories()
 
         # Initialise Speech Recognition Module
@@ -41,7 +44,7 @@ class AI_Object:
         with SR.Microphone() as source: # select a microphone
             self.Recogniser.adjust_for_ambient_noise(source, duration=0.5) # adjust for background noise
             if not self.AIInitiated: self.Respond(self.Name + " has been initiated."); self.AIInitiated = True # if not informed users that AI is initiated, inform them
-            if PlayNotif: self.PlaySound('./.assets/sounds/listening.wav') # listening tone
+            if PlayNotif: self.PlaySound('./assets/sounds/listening.wav') # listening tone
             audio = self.Recogniser.listen(source) # start recording for user inputs
             said = "" # variable declaration
 
@@ -58,13 +61,13 @@ class AI_Object:
         Output = edge_tts.Communicate(Response, "en-GB-RyanNeural") # TTS Model
         
         # Convert Response Text to Audio and overwrite to "AI_Response.mp3"
-        with open("./assets/AI_Response.mp3", "wb") as file:
+        with open("./assets/sounds/AI_Response.mp3", "wb") as file:
             for chunk in Output.stream_sync():
                 if chunk["type"] == "audio":
                     file.write(chunk["data"])
 
         print(f"{self.Name}: {Response}") # print to console
-        self.PlaySound("./assets/AI_Response.mp3") # play the response
+        self.PlaySound("./assets/sounds/AI_Response.mp3") # play the response
 
     # Ask AI for a response
     def AI_Response(self, InputFromUser: str, PreviousConversation: dict={}):
@@ -160,10 +163,13 @@ class AI_Object:
                                         # AI respond with database response while executing the command
                                         self.Respond(self.AppDirectories["Commands"][App]["Response"])
 
-                                        if CommandType == "LaunchWebsite": # Launch Website if the Command is a link
+                                        if CommandType == "LaunchApplication": # Launch App if the Command is a link
+                                            AppDirectory = self.AppDirectories["Commands"][App]["Command"]
+                                            subprocess.run(r'explorer.exe "{}"'.format(AppDirectory))
+                                        elif CommandType == "LaunchWebsite": # Launch Website if the Command is a link
                                             URL = self.AppDirectories["Commands"][App]["Command"]
                                             subprocess.run(r'explorer.exe "{}"'.format(URL))
-                                        elif CommandType == "Powershell" or CommandType == "LaunchApplication": # Launch powershell command if command is PS command
+                                        elif CommandType == "Powershell": # Launch powershell command if command is PS command
                                             subprocess.run(self.AppDirectories["Commands"][App]["Command"])
 
                                     except: # if error while launching
@@ -172,7 +178,7 @@ class AI_Object:
                                         self.Respond("Sorry, launch failed.")
 
                                     return # end function
-        
+                                
         # If we get here, it means we couldn't find anything in the database. Thereby, our course of action is to ask AI
         NewConversation = self.AI_Response(InputFromUser, PreviousConversation) # gets chat history for this session
         AI_Response = NewConversation[-1]["content"] # gets AI's response
