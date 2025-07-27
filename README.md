@@ -8,6 +8,11 @@ Don't use physical inputs and start using AI Assistant, an AI-powered voice assi
 **Customisable Experience**: Create your own commands!  
 **Open-sourced**: Read the code, change it to your own needs!  
 **Custom AI**: Use your own API key
+## WARNING ⚠️
+
+The project is currently a prototype used locally by users. There are many improvements to be made such as using SQL for databases to improve scalability. Some personal improvements is encouraged as a learning tool.  
+
+The author is NOT responsible for having API keys leaked, or anything malicious additions by the end user. The project is open-sourced.
 ## Installation 💾
 
 Before installation, note that the current version is only compatible on Windows, but will soon be compatible with Linux and MacOS.
@@ -18,7 +23,7 @@ Before installation, note that the current version is only compatible on Windows
 ```bash
 pip install -r requirements.txt
 ```
-4. Add your [AI's API key](#getting-an-api-key) as an environmental variable in "*.env*" file.
+4. Add your [AI's API key](#getting-and-saving-api-keys-) as an environmental variable in "*.env*" file.
 5. Rename `main.py` to `main.pyw` if desired to run without a console window.
 6. Change the AI's attributes:  open `main.py` in a text editor such as Notepad and change data in "AI/User Data".
 7. Run the `main.py*` file and let it initialise (this could take a while depending on your system for the first time).
@@ -36,11 +41,6 @@ There are many ways to get an API key, but this section will guide you through o
 API_KEY = "Bearer [API_KEY_HERE]"
 ```
 6. Save the ".env" file.
-## WARNING ⚠️
-
-The project is currently a prototype used locally by users. There are many improvements to be made such as using SQL for databases to improve scalability. Some personal improvements is encouraged as a learning tool.  
-
-The author is NOT responsible for having API keys leaked, or anything malicious additions by the end user. The project is open-sourced.
 ## Usage 🪴
 
 To trigger the AI, simply same the AI's name (default is Jarvis). Provide your input after the AI responds with "Yes sir?" following a beep.
@@ -61,7 +61,7 @@ These commands are coded directly into the program and not in the database.
 If the Assistant cannot confirm these commands, it will either ask again, run the program through the database for possible answer, or ask your AI model of choice.
 
 These commands can only be overwritten within the code, and is suggested to change to fit different tones, accents, and microphone quality. (I know I had an issue with my accents detecting "cancel" as "council")
-## Adding Commands
+## Adding Commands ➕
 
 Use the provided `DatabaseManipulator.py` and select choice "1" to guide you through adding commands.
 
@@ -73,13 +73,13 @@ When asked for words that "MUST be included," be sure to list words that you nee
 In the section for words that "contain at least one of these key word," it will repetitively ask for words until confirm() is typed. As long as one of these words typed is said, the command can run; runs as long as other the words that must be included are also present. After confirming, you can either confirm the final list, or add another list of words with similar intent.  
 **Use-case example**: To trigger command with either of two verbs with same meaning such as "open" or "launch"
   
-⚠️⚠️⚠️ **IMPORTANT WARNING: WHILE USERS MAY ADD POWERSHELL COMMANDS FOR SCRIPTING COMPLEX WORKFLOWS, MALICIOUS ACTORS MAY EXPLOIT ITS PRIVILEGES, SO USE THIS OPTION AS YOUR OWN RISK.** ⚠️⚠️⚠️
-## Removing Commands
+⚠️⚠️⚠️ **WARNING: WHILE USERS MAY ADD POWERSHELL COMMANDS FOR SCRIPTING COMPLEX WORKFLOWS, MALICIOUS ACTORS MAY EXPLOIT ITS PRIVILEGES, SO USE THIS OPTION AS YOUR OWN RISK.** ⚠️⚠️⚠️
+## Removing Commands ❌
 
 Use the provided `DatabaseManipulator.py` and select choice "2" to guide you through removing commands.
 
 You must know the name of the command you are trying to remove. If you do not know the name, open `Database.json` file and try looking for it.
-## Modifying Commands
+## Modifying Commands 🔧
 
 Use the provided `DatabaseManipulator.py` and select choice "3" to guide you through adding commands.
 
