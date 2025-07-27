@@ -17,7 +17,7 @@ def main():
         load_dotenv('./.env') # Load Environmental Variables
         AI_API_KEY = os.environ.get("API_KEY")
 
-        # Create AI Class
+        # Create AI object
         AI = AI_Object(Name=AI_Name, Gender=AI_Gender, Description=AI_Description, AI_API_KEY=AI_API_KEY)
 
         # Repeatedly listen for the trigger word (AI's name)
